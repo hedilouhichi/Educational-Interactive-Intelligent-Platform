@@ -365,11 +365,13 @@ import stanza
 from quantulum3 import parser
 
 class BertForMathProblemClassification(nn.Module):
+    
     def __init__(self, num_labels=2):
         super(BertForMathProblemClassification, self).__init__()
         self.bert = transformers.BertModel.from_pretrained('bert-base-uncased')
         self.dropout = nn.Dropout(0.1)
         self.classifier = nn.Linear(self.bert.config.hidden_size, num_labels)
+     
         
     def forward(self, input_ids, attention_mask):
         outputs = self.bert(input_ids=input_ids, attention_mask=attention_mask)
@@ -378,9 +380,11 @@ class BertForMathProblemClassification(nn.Module):
         logits = self.classifier(pooled_output)
         return logits
 
+
 def detect_language(text):
     lang, confidence = langid.classify(text)
     return lang
+
 
 action_verbs =  ['Clean', 'Drink', 'Play', 'Turn', 'Sit down', 'Smell', 'Ski', 'Wonder', 'Explain', 'Increase', 'Repeat', 'Bathe', 'Run', 'Tell', 'Hug', 'Sit', 'Plan', 'Wash', 'Start', 'Climb', 'Touch', 'Cook', 'Agree', 'Offer', 'Answer', 'Stand', 'Point', 'Check', 'Receive', 'Collect', 'Stand up', 'Ask', 'Enter', 'Continue', 'Rise', 'Leave', 'Enjoy', 'Dream', 'Paint', 'Shake', 'Learn',  'Carry', 'Follow', 'Speak', 'Write', 'Eat', 'Jump', 'Hold', 'Drive', 'Show', 'Use', 'Finish', 'Move', 'Watch', 'Draw', 'Regard', 'Improve', 'Allow', 'Smile', 'Bow', 'Love', 'Dance', 'Hope', 'Meet', 'Choose', 'Grow', 'Take', 'Walk', 'Open', 'Give', 'Reply', 'Exit', 'Travel', 'Change', 'Think', 'Ride', 'Return', 'Like', 'Close', 'Become', 'Create', 'Send', 'Laugh', 'Cry', 'Hear', 'Help', 'Call', 'Find', 'Save', 'Contribute', 'Prepare', 'Begin', 'Solve', 'Study', 'Join', 'Complete', 'Read', 'Act', 'Catch', 'Hide', 'Sell', 'Talk', 'Want']
 action_verbs = [word.lower() for word in action_verbs]
@@ -388,7 +392,6 @@ action_verbs = [word.lower() for word in action_verbs]
 
 def image_generation(seed):
     #stanza.download('ar')
-    
     # This sets up a default neural pipeline in Lang
     print(seed)
     sentences = seed.split('.')
